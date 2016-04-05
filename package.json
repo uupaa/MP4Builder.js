@@ -1,6 +1,6 @@
 {
   "name": "uupaa.mp4builder.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "MP4 File builder",
   "url": "https://github.com/uupaa/MP4Builder.js",
   "keywords": ["AVC", "MP4", "H.264", "Builder", "uupaa", "WebModule", "Unstable"],
