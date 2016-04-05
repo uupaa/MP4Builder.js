@@ -1,6 +1,6 @@
 {
   "name": "uupaa.mp4builder.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "MP4 File builder",
   "url": "https://github.com/uupaa/MP4Builder.js",
   "keywords": ["AVC", "MP4", "H.264", "Builder", "uupaa", "WebModule", "Unstable"],
@@ -32,7 +32,8 @@
     "start": "cd ../; Python -m SimpleHTTPServer 8000 &",
     "stop": "killall -- Python -m SimpleHTTPServer 8000; exit 0",
     "make_assets": "cd test/assets; ./make_video; cd -",
-    "clean_assets": "cd test/assets; rm -rf ./ff; rm -rf ./js; cd -"
+    "clean_assets": "cd test/assets; rm -rf ./ff; rm -rf ./js; cd -",
+    "bin_diff": "cmp -b -l test/assets/ff/png.all.mp4 test/assets/js/png.all.mp4"
   },
   "webmodule": {
     "develop": false,

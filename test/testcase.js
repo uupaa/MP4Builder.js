@@ -20,38 +20,42 @@ var test = new Test(["MP4Builder"], { // Add the ModuleName to be tested here (i
 if (IN_BROWSER || IN_NW || IN_EL) {
     test.add([
         testMP4Builder_buildMP4,
-        //testMP4Builder_build2,
     ]);
 }
 
 // --- test cases ------------------------------------------
 function testMP4Builder_buildMP4(test, pass, miss) {
-    //  MP4.build(MP4.parse("ff/png.00.mp4")) が Finder 上で再生できる事を確認する
+    //  ff/png.all.mp4 を parse -> build -> parse -> build した結果、元と同じファイルが生成される事を確認する
 
-    var mp4File  = "../assets/ff/png.00.mp4";
-    var saveFile = "../assets/js/png.00.mp4";
+    var mp4File  = "../assets/ff/png.all.mp4";
+    var saveFile = "../assets/js/png.all.mp4";
 
     FileLoader.toArrayBuffer(mp4File, function(buffer) {
         console.log("testMP4Builder_buildMP4: ", mp4File, buffer.byteLength);
 
         MP4Parser.VERBOSE = false
-        // phase 1
-        var originalStream = new Uint8Array(buffer);
-        var mp4BoxTree1    = MP4Parser.parse(originalStream);
-        var mp4FileStream1 = MP4Builder.build(mp4BoxTree1, { fastStart: true, diagnostic: true });
 
-        //require("fs").writeFileSync("../a.mp4", new Buffer(stream), "binary");
-        //require("fs").writeFileSync("../b.mp4", new Buffer(stream), "binary");
+        var mp4tree1 = MP4Parser.parse( new Uint8Array(buffer) );
+        var mp4file1 = MP4Builder.build(mp4tree1, { fastStart: true, diagnostic: true }); // { stream, diagnostic }
+        var mp4tree2 = MP4Parser.parse(mp4file1.stream);
+        var mp4file2 = MP4Builder.build(mp4tree2, { fastStart: true, diagnostic: true });
 
-        // cmp -b -l a.mp4 assets/ff/png.00.mp4 で生成したファイルのdiffを取得し確認する
-        // phase 2
-        var mp4BoxTree2    = MP4Parser.parse(mp4FileStream1.stream);
-        var mp4FileStream2 = MP4Builder.build(mp4BoxTree2, { fastStart: true, diagnostic: true });
+        if (IN_EL) {
+            //
+            // 目視確認用(Electronのみ)
+            //
+            // $ npm run el
+            // $ npm run bin_diff
+            //
+            // または
+            //
+            // cmp -b -l test/assets/ff/png.all.mp4 test/assets/js/png.all.mp4
+            //
+            require("fs").writeFileSync(saveFile, new Buffer(mp4file2.stream.buffer), "binary");
+            console.log("put file: " + saveFile);
+        }
 
-        //require("fs").writeFileSync(saveFile, new Buffer(mp4FileStream2.stream.buffer), "binary");
-
-        // Finder で確認
-        if ( _binaryCompare(mp4FileStream1.stream, mp4FileStream2.stream) ) {
+        if ( _binaryCompare(mp4file1.stream, mp4file2.stream) ) {
             test.done(pass());
         } else {
             test.done(miss());
