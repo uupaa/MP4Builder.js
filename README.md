@@ -2,7 +2,7 @@
 
 [![npm](https://nodei.co/npm/uupaa.mp4builder.js.svg?downloads=true&stars=true)](https://nodei.co/npm/uupaa.mp4builder.js/)
 
-MP4 File builder
+MP4 File builder.
 
 This module made of [WebModule](https://github.com/uupaa/WebModule).
 
