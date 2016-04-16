@@ -36,6 +36,7 @@ function testMP4Builder_buildMP4(test, pass, miss) {
         MP4Parser.VERBOSE = false
 
         var mp4tree1 = MP4Parser.parse( new Uint8Array(buffer) );
+debugger;
         var mp4file1 = MP4Builder.build(mp4tree1, { fastStart: true, diagnostic: true }); // { stream, diagnostic }
         var mp4tree2 = MP4Parser.parse(mp4file1.stream);
         var mp4file2 = MP4Builder.build(mp4tree2, { fastStart: true, diagnostic: true });
